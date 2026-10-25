@@ -1,0 +1,338 @@
+{
+  "format": "yomiri.catalog.v1",
+  "name": "iamdecherre",
+  "version": "2026.10.25",
+  "sources": [
+    {
+      "type": "manga",
+      "connectorId": "mangadex",
+      "iconUrl": "https://yomiri.xyz/source-icons/mangadex.png"
+    },
+    {
+      "type": "manga",
+      "connectorId": "leercapitulo",
+      "iconUrl": "https://yomiri.xyz/source-icons/leercapitulo.png"
+    },
+    {
+      "type": "manga",
+      "connectorId": "kazokuden",
+      "iconUrl": "https://yomiri.xyz/source-icons/kazokuden.png"
+    },
+    {
+      "type": "manga",
+      "connectorId": "anzmanga",
+      "iconUrl": "https://yomiri.xyz/source-icons/anzmanga.png"
+    },
+    {
+      "type": "manga",
+      "connectorId": "dbnewhope",
+      "iconUrl": "https://yomiri.xyz/source-icons/dbnewhope.png"
+    },
+    {
+      "type": "manga",
+      "connectorId": "marmota",
+      "iconUrl": "https://yomiri.xyz/source-icons/marmota.png"
+    },
+    {
+      "type": "manga",
+      "connectorId": "enchiladascan",
+      "iconUrl": "https://yomiri.xyz/source-icons/enchiladascan.png"
+    },
+    {
+      "type": "manga",
+      "connectorId": "olympusscanlation",
+      "iconUrl": "https://yomiri.xyz/source-icons/olympusscanlation.png"
+    },
+    {
+      "type": "manga",
+      "connectorId": "inmanga",
+      "iconUrl": "https://yomiri.xyz/source-icons/inmanga.png"
+    },
+    {
+      "type": "manga",
+      "connectorId": "novelcool",
+      "iconUrl": "https://yomiri.xyz/source-icons/novelcool.png"
+    },
+    {
+      "type": "manga",
+      "connectorId": "mangaplus",
+      "iconUrl": "https://yomiri.xyz/source-icons/mangaplus.png"
+    },
+    {
+      "type": "manga",
+      "profile": {
+        "schemaVersion": 1,
+        "id": "comparticomics",
+        "name": "CompartiComics",
+        "baseUrl": "https://comparticomics.lat",
+        "allowedHosts": [
+          "comparticomics.lat"
+        ],
+        "template": "CustomCSS",
+        "requiresSession": true,
+        "cacheTtlMs": 300000,
+        "ui": {
+          "iconUrl": "https://comparticomics.lat/favicon.ico",
+          "mangaPath": "/comic/",
+          "chapterPath": "/api/download/",
+          "idMode": "path",
+          "languages": [
+            "es"
+          ],
+          "pageSize": 40,
+          "latestOrder": "added",
+          "chapterDelivery": "external-file"
+        },
+        "operations": {
+          "search": {
+            "steps": [
+              {
+                "url": "{baseUrl}/api/groups?page={page}&sort=relevance&unpin=1&q={query}",
+                "extract": {
+                  "kind": "json",
+                  "decoder": {
+                    "kind": "builtin",
+                    "name": "comparticomics-catalog"
+                  },
+                  "allowEmpty": true,
+                  "fields": {
+                    "title": {
+                      "path": "title",
+                      "required": true
+                    },
+                    "url": {
+                      "path": "url",
+                      "required": true,
+                      "transforms": [
+                        "absolute-url"
+                      ]
+                    },
+                    "coverUrl": {
+                      "path": "coverUrl",
+                      "required": false,
+                      "asset": true,
+                      "transforms": [
+                        "absolute-url"
+                      ]
+                    },
+                    "author": {
+                      "path": "author",
+                      "required": false
+                    },
+                    "description": {
+                      "path": "description",
+                      "required": false
+                    },
+                    "genres": {
+                      "path": "genres",
+                      "required": false
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "detail": {
+            "steps": [
+              {
+                "url": "{baseUrl}/api/group/{manga.id}",
+                "extract": {
+                  "kind": "json",
+                  "decoder": {
+                    "kind": "builtin",
+                    "name": "comparticomics-detail"
+                  },
+                  "allowEmpty": true,
+                  "fields": {
+                    "title": {
+                      "path": "title",
+                      "required": true
+                    },
+                    "url": {
+                      "path": "url",
+                      "required": true,
+                      "transforms": [
+                        "absolute-url"
+                      ]
+                    },
+                    "coverUrl": {
+                      "path": "coverUrl",
+                      "required": false,
+                      "asset": true,
+                      "transforms": [
+                        "absolute-url"
+                      ]
+                    },
+                    "author": {
+                      "path": "author",
+                      "required": false
+                    },
+                    "description": {
+                      "path": "description",
+                      "required": false
+                    },
+                    "genres": {
+                      "path": "genres",
+                      "required": false
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "chapters": {
+            "steps": [
+              {
+                "url": "{baseUrl}/api/group/{manga.id}",
+                "extract": {
+                  "kind": "json",
+                  "decoder": {
+                    "kind": "builtin",
+                    "name": "comparticomics-chapters"
+                  },
+                  "allowEmpty": true,
+                  "fields": {
+                    "name": {
+                      "path": "name"
+                    },
+                    "url": {
+                      "path": "url",
+                      "transforms": [
+                        "absolute-url"
+                      ]
+                    },
+                    "uploadDate": {
+                      "path": "uploadDate",
+                      "required": false
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "pages": {
+            "steps": [
+              {
+                "url": "{baseUrl}/api/download_check/{chapter.id}",
+                "extract": {
+                  "kind": "json",
+                  "fields": {
+                    "allowed": {
+                      "path": "allowed"
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "catalog": {
+          "steps": [
+            {
+              "url": "{baseUrl}/api/groups?page={page}&sort=downloads&unpin=1",
+              "extract": {
+                "kind": "json",
+                "decoder": {
+                  "kind": "builtin",
+                  "name": "comparticomics-catalog"
+                },
+                "allowEmpty": true,
+                "fields": {
+                  "title": {
+                    "path": "title",
+                    "required": true
+                  },
+                  "url": {
+                    "path": "url",
+                    "required": true,
+                    "transforms": [
+                      "absolute-url"
+                    ]
+                  },
+                  "coverUrl": {
+                    "path": "coverUrl",
+                    "required": false,
+                    "asset": true,
+                    "transforms": [
+                      "absolute-url"
+                    ]
+                  },
+                  "author": {
+                    "path": "author",
+                    "required": false
+                  },
+                  "description": {
+                    "path": "description",
+                    "required": false
+                  },
+                  "genres": {
+                    "path": "genres",
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "latest": {
+          "steps": [
+            {
+              "url": "{baseUrl}/api/groups?page={page}&sort=newest&unpin=1",
+              "extract": {
+                "kind": "json",
+                "decoder": {
+                  "kind": "builtin",
+                  "name": "comparticomics-catalog"
+                },
+                "allowEmpty": true,
+                "fields": {
+                  "title": {
+                    "path": "title",
+                    "required": true
+                  },
+                  "url": {
+                    "path": "url",
+                    "required": true,
+                    "transforms": [
+                      "absolute-url"
+                    ]
+                  },
+                  "coverUrl": {
+                    "path": "coverUrl",
+                    "required": false,
+                    "asset": true,
+                    "transforms": [
+                      "absolute-url"
+                    ]
+                  },
+                  "author": {
+                    "path": "author",
+                    "required": false
+                  },
+                  "description": {
+                    "path": "description",
+                    "required": false
+                  },
+                  "genres": {
+                    "path": "genres",
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "anime",
+      "connectorId": "animeav1",
+      "iconUrl": "https://yomiri.xyz/source-icons/animeav1.png"
+    },
+    {
+      "type": "live",
+      "connectorId": "nowfutbol",
+      "iconUrl": "https://nowfutbol.xyz/favicon.ico"
+    }
+  ]
+}
