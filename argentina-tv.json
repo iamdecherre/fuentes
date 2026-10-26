@@ -1,0 +1,11 @@
+{
+  "format": "yomiri.catalog.v1",
+  "name": "Argentina TV",
+  "sources": [
+    {
+      "type": "live",
+      "connectorId": "argentinatv",
+      "iconUrl": "https://www.mitelefe.com/media/cache/logo/logo-telefe-blanco-69286e9c2c776.png"
+    }
+  ]
+}
