@@ -260,10 +260,6 @@
     "name": "Telefe",
     "category": "aire",
     "logoUrl": "https://angulismotv.pages.dev/assets/logos/TELEFE.png",
-    "options": [
-      { "name": "Opción 1 (Solo ARGENTINA o VPN)", "url": "https://bestleague.life/cvatt.html?get=VGVsZWZlSEQ=" },
-      { "name": "Opción 2 (EXTENSIÓN PC)", "url": "https://bestleague.life/tok.html?get=VGVsZWZlSEQ=" },
-      { "name": "Opción 3", "url": "https://la18hd.su/vivo/canales.php?stream=telefe" }
-    ]
+    "player": "telefe-official"
   }
 ]
