@@ -1,0 +1,258 @@
+[
+  {
+    "id": "tvp",
+    "name": "TV Pública",
+    "category": "aire",
+    "ytChannelId": "UCs231K71Bnu5295_x0MB5Pg",
+    "logoUrl": "https://i.ytimg.com/vi/CVNBbM9TxK8/hqdefault.jpg"
+  },
+  {
+    "id": "eltrece",
+    "name": "eltrece",
+    "category": "aire",
+    "ytChannelId": "UC0DM_mHV2u6dj8ig51GkQwg",
+    "logoUrl": "https://i.ytimg.com/vi/oCFfmkv-9rc/hqdefault.jpg"
+  },
+  {
+    "id": "america",
+    "name": "América TV",
+    "category": "aire",
+    "ytChannelId": "UC6NVDkuzY2exMOVFw4i9oHw",
+    "logoUrl": "https://i.ytimg.com/vi/5WING-K-BlY/hqdefault.jpg"
+  },
+  {
+    "id": "nueve",
+    "name": "El Nueve",
+    "category": "aire",
+    "ytChannelId": "UCUT4NmGqjrVpKf2JyiS_bbA",
+    "logoUrl": "https://i.ytimg.com/vi/yGLVhAklLyM/hqdefault.jpg"
+  },
+  {
+    "id": "ciudad",
+    "name": "Canal de la Ciudad",
+    "category": "aire",
+    "ytChannelId": "UCOV_Vx1baZJY9Tfvgm-UI3w",
+    "logoUrl": "https://i.ytimg.com/vi/AMiVAF_tuJ4/hqdefault.jpg"
+  },
+  {
+    "id": "net",
+    "name": "Net TV",
+    "category": "aire",
+    "ytChannelId": "UC8aY1r3sNj1nujEisGkxtyA",
+    "logoUrl": "https://i.ytimg.com/vi/oyHnyISVCMU/hqdefault.jpg"
+  },
+  {
+    "id": "eldoce",
+    "name": "El Doce (Córdoba)",
+    "category": "aire",
+    "ytChannelId": "UCiaePeoCqpU8hBHiNrgkzrA",
+    "logoUrl": "https://i.ytimg.com/vi/nndzeKDSjuc/hqdefault.jpg"
+  },
+  {
+    "id": "canal10",
+    "name": "Canal 10 Córdoba",
+    "category": "aire",
+    "ytChannelId": "UCUzonpa3XKurQVycdMY70XQ",
+    "logoUrl": "https://i.ytimg.com/vi/QSrU2KocsRY/hqdefault.jpg"
+  },
+  {
+    "id": "tn",
+    "name": "TN",
+    "category": "noticias",
+    "ytChannelId": "UCj6PcyLvpnIRT_2W_mwa9Aw",
+    "logoUrl": "https://i.ytimg.com/vi/cb12KmMMDJA/hqdefault.jpg"
+  },
+  {
+    "id": "c5n",
+    "name": "C5N",
+    "category": "noticias",
+    "ytChannelId": "UCFgk2Q2mVO1BklRQhSv6p0w",
+    "logoUrl": "https://i.ytimg.com/vi/j6oh4Kqz3UM/hqdefault.jpg"
+  },
+  {
+    "id": "a24",
+    "name": "A24",
+    "category": "noticias",
+    "ytChannelId": "UCR9120YBAqMfntqgRTKmkjQ",
+    "logoUrl": "https://i.ytimg.com/vi/ArKbAx1K-2U/hqdefault.jpg"
+  },
+  {
+    "id": "lnmas",
+    "name": "LN+",
+    "category": "noticias",
+    "ytChannelId": "UCba3hpU7EFBSk817y9qZkiA",
+    "logoUrl": "https://i.ytimg.com/vi/FEWZjXJ7M0c/hqdefault.jpg"
+  },
+  {
+    "id": "cronica",
+    "name": "Crónica TV",
+    "category": "noticias",
+    "ytChannelId": "UCT7KFGv6s2a-rh2Jq8ZdM1g",
+    "logoUrl": "https://i.ytimg.com/vi/hw4uHyct4vg/hqdefault.jpg"
+  },
+  {
+    "id": "canal26",
+    "name": "Canal 26",
+    "category": "noticias",
+    "ytChannelId": "UCrpMfcQNog595v5gAS-oUsQ",
+    "logoUrl": "https://i.ytimg.com/vi/C_RnFD6xiX8/hqdefault.jpg"
+  },
+  {
+    "id": "senado",
+    "name": "Senado TV",
+    "category": "noticias",
+    "ytChannelId": "UCStm2uvQKowSXrnCzTWAn6Q",
+    "logoUrl": "https://i.ytimg.com/vi/1_AsfepXxFM/hqdefault.jpg"
+  },
+  {
+    "id": "diputados",
+    "name": "Diputados TV",
+    "category": "noticias",
+    "ytChannelId": "UC5KfW9_wv4tqbIPgY8tMG-w"
+  },
+  {
+    "id": "infobae",
+    "name": "Infobae",
+    "category": "noticias",
+    "ytChannelId": "UCvsU0EGXN7Su7MfNqcTGNHg",
+    "logoUrl": "https://i.ytimg.com/vi/XPtraArHaQU/hqdefault.jpg"
+  },
+  {
+    "id": "a12",
+    "name": "Argentina 12",
+    "category": "noticias",
+    "ytChannelId": "UC1bBjOZieJWHbsFA0LwjjJA",
+    "logoUrl": "https://i.ytimg.com/vi/21UP3XoRIBU/hqdefault.jpg"
+  },
+  {
+    "id": "canale",
+    "name": "Canal E",
+    "category": "noticias",
+    "ytChannelId": "UCW53kA_WXKWVxJbpHrTOBfw",
+    "logoUrl": "https://i.ytimg.com/vi/svekeJWi27o/hqdefault.jpg"
+  },
+  {
+    "id": "mitre",
+    "name": "Radio Mitre",
+    "category": "noticias",
+    "ytChannelId": "UCYvINPByAdCcpA0sWrF3I_w",
+    "logoUrl": "https://i.ytimg.com/vi/gLRijRdfkjU/hqdefault.jpg"
+  },
+  {
+    "id": "destape",
+    "name": "El Destape",
+    "category": "noticias",
+    "ytChannelId": "UC5wAqJ9NF0fpGH9dVf3h6HA",
+    "logoUrl": "https://i.ytimg.com/vi/6GIF-EAlGRM/hqdefault.jpg"
+  },
+  {
+    "id": "neura",
+    "name": "Neura",
+    "category": "noticias",
+    "ytChannelId": "UC-40U87JsevMIMn7PMw4jPw",
+    "logoUrl": "https://i.ytimg.com/vi/qBmZqmxpDnc/hqdefault.jpg"
+  },
+  {
+    "id": "carajo",
+    "name": "Carajo",
+    "category": "noticias",
+    "ytChannelId": "UC4mdhKZXjrKoq5aVG6juHEg",
+    "logoUrl": "https://i.ytimg.com/vi/vmeCFibskoc/hqdefault.jpg"
+  },
+  {
+    "id": "luzu",
+    "name": "Luzu TV",
+    "category": "streaming",
+    "ytChannelId": "UCTHaNTsP7hsVgBxARZTuajw",
+    "logoUrl": "https://i.ytimg.com/vi/gbkeC8y5GSE/hqdefault.jpg"
+  },
+  {
+    "id": "olga",
+    "name": "Olga",
+    "category": "streaming",
+    "ytChannelId": "UC7mJ2EDXFomeDIRFu5FtEbA"
+  },
+  {
+    "id": "blender",
+    "name": "Blender",
+    "category": "streaming",
+    "ytChannelId": "UC6pJGaMdx5Ter_8zYbLoRgA",
+    "logoUrl": "https://i.ytimg.com/vi/cpJ0k-rC7wU/hqdefault.jpg"
+  },
+  {
+    "id": "gelatina",
+    "name": "Gelatina",
+    "category": "streaming",
+    "ytChannelId": "UCWSfXECGo1qK_H7SXRaUSMg"
+  },
+  {
+    "id": "vorterix",
+    "name": "Vorterix",
+    "category": "streaming",
+    "ytChannelId": "UCvCTWHCbBC0b9UIeLeNs8ug",
+    "logoUrl": "https://i.ytimg.com/vi/ZcQpju9mUgU/hqdefault.jpg"
+  },
+  {
+    "id": "urbana",
+    "name": "Urbana Play",
+    "category": "streaming",
+    "ytChannelId": "UCC1kfsMJko54AqxtcFECt-A",
+    "logoUrl": "https://i.ytimg.com/vi/Smm5Cegp6u8/hqdefault.jpg"
+  },
+  {
+    "id": "futurock",
+    "name": "Futurock",
+    "category": "streaming",
+    "ytChannelId": "UCMIoDzB2T3H-eCPtWNWuGow"
+  },
+  {
+    "id": "bondi",
+    "name": "Bondi",
+    "category": "streaming",
+    "ytChannelId": "UCYFH1ooxytwG5ICHbHJ1S6Q"
+  },
+  {
+    "id": "la100",
+    "name": "La 100",
+    "category": "streaming",
+    "ytChannelId": "UC2zO2jZCDplwm8SVsXUcxCQ"
+  },
+  {
+    "id": "convos",
+    "name": "Radio con Vos",
+    "category": "streaming",
+    "ytChannelId": "UCxDteokWBemJvLI_I0VUGdA",
+    "logoUrl": "https://i.ytimg.com/vi/DwwxS-CJHk4/hqdefault.jpg"
+  },
+  {
+    "id": "somos",
+    "name": "Somos Radio AM 530",
+    "category": "streaming",
+    "ytChannelId": "UCN3gx_z62nxCeFIkaK2HbrA",
+    "logoUrl": "https://i.ytimg.com/vi/Ytwx5Prlrog/hqdefault.jpg"
+  },
+  {
+    "id": "deportv",
+    "name": "DeporTV",
+    "category": "deportes",
+    "ytChannelId": "UCSmh3DFxBwFurMttT60PQ1g"
+  },
+  {
+    "id": "tyc-sports",
+    "name": "TyC Sports",
+    "category": "deportes",
+    "pageUrl": "https://www.teleonline.tv/canal/tyc-sports/"
+  },
+  {
+    "id": "azz-stream",
+    "name": "AZZ Stream",
+    "category": "deportes",
+    "pageUrl": "https://www.teleonline.tv/canal/azz-stream/"
+  },
+  {
+    "id": "picado-tv",
+    "name": "Picado TV",
+    "category": "deportes",
+    "pageUrl": "https://www.teleonline.tv/canal/picado-tv/"
+  }
+]
