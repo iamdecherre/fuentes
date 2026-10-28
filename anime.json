@@ -2,6 +2,14 @@
   "format": "yomiri.catalog.v1",
   "name": "iamdecherre · Anime",
   "sources": [
+    {"type":"anime","connectorId":"katanime","iconUrl":"https://katanime.net/favicon.ico"},
+    {"type":"anime","connectorId":"animeyt","iconUrl":"https://animeyt.cc/favicon.ico"},
+    {"type":"anime","connectorId":"monoschinos","iconUrl":"https://monoschinos.st/favicon.ico"},
+    {
+      "type": "anime",
+      "connectorId": "animeflvor",
+      "iconUrl": "https://animeflv.or.at/favicon.ico"
+    },
     {
       "type": "anime",
       "connectorId": "animeav1",
