@@ -1,0 +1,16 @@
+{
+  "format": "yomiri.catalog.v1",
+  "name": "iamdecherre · Anime",
+  "sources": [
+    {
+      "type": "anime",
+      "connectorId": "animeav1",
+      "iconUrl": "https://yomiri.xyz/source-icons/animeav1.png"
+    },
+    {
+      "type": "anime",
+      "connectorId": "jkanime",
+      "iconUrl": "https://jkanime.net/favicon.ico"
+    }
+  ]
+}

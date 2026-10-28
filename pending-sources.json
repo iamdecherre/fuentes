@@ -1,0 +1,55 @@
+{
+  "format": "yomiri.pending.v1",
+  "installable": false,
+  "sources": [
+    {
+      "name": "AnimeFLV",
+      "url": "https://animeflv.or.at/",
+      "category": "anime",
+      "status": "pending-adapter",
+      "playbackVerified": false
+    },
+    {
+      "name": "AnimeLatinoHD",
+      "url": "https://www.animelatinohd.com/",
+      "category": "anime",
+      "status": "pending-adapter",
+      "playbackVerified": false
+    },
+    {
+      "name": "AnimeYT",
+      "url": "https://animeyt.cc/",
+      "category": "anime",
+      "status": "pending-adapter",
+      "playbackVerified": false
+    },
+    {
+      "name": "Katanime",
+      "url": "https://katanime.net/",
+      "category": "anime",
+      "status": "pending-adapter",
+      "playbackVerified": false
+    },
+    {
+      "name": "MonosChinos",
+      "url": "https://monoschinos.st/",
+      "category": "anime",
+      "status": "pending-adapter",
+      "playbackVerified": false
+    },
+    {
+      "name": "LACartoons",
+      "url": "https://www.lacartoons.com/",
+      "category": "series",
+      "status": "pending-adapter",
+      "playbackVerified": false
+    },
+    {
+      "name": "Wcuevana",
+      "url": "https://wcuevana.pro/",
+      "category": "series",
+      "status": "pending-adapter",
+      "playbackVerified": false
+    }
+  ]
+}

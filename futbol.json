@@ -1,0 +1,11 @@
+{
+  "format": "yomiri.catalog.v1",
+  "name": "iamdecherre · Fútbol",
+  "sources": [
+    {
+      "type": "live",
+      "connectorId": "nowfutbol",
+      "iconUrl": "https://nowfutbol.xyz/favicon.ico"
+    }
+  ]
+}
