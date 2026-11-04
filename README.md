@@ -24,3 +24,22 @@ Incluye conectores para MangaDex, LeerCapítulo, Kazoku Den, AnzManga, DB New Ho
 El catálogo usa conectores de Yomiri y perfiles declarativos. No descarga APKs ni ejecuta código remoto. La disponibilidad de cada señal o catálogo depende de su proveedor.
 
 `index.json` conserva el catálogo anterior para versiones anteriores de Yomiri.
+
+## Servicio independiente de anime y fútbol
+
+El código en [service](service) sirve los manifiestos, catálogos, fichas y
+señales directas de AnimeAV1, AnimeFLV, JKAnime, AnimeYT, Katanime, MonosChinos,
+AniZone, LACartoons y RBTV+. AniZone y LACartoons tienen restricciones de
+reproducción web pendientes.
+
+Para alojarlo en un servicio Node.js 24 con HTTPS:
+
+1. Configurá el directorio de ejecución en `service` y ejecutá `npm ci`.
+2. Configurá `PUBLIC_BASE_URL` con el origen HTTPS asignado por el alojamiento,
+   `HOST=0.0.0.0` y el puerto que indique el alojamiento.
+3. Iniciá con `npm start`.
+4. Agregá la URL HTTPS terminada en `/index.json` desde Fuentes en Yomiri.
+   El índice lista los manifiestos y cada fuente se instala por separado.
+
+GitHub conserva el código. El alojamiento ejecuta el servicio y responde a las
+consultas de catálogo y reproducción.

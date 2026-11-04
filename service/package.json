@@ -1,0 +1,15 @@
+{
+  "name": "fuentes-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node --experimental-transform-types legacy-integrations/anime/serve-animeav1.ts"
+  },
+  "dependencies": {
+    "linkedom": "0.18.13"
+  }
+}
