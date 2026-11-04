@@ -1,0 +1,1894 @@
+{
+  "format": "yomiri.repository.v1",
+  "name": "iamdecherre",
+  "sources": [
+    {
+      "schemaVersion": 1,
+      "id": "leercapitulo",
+      "name": "LeerCapítulo",
+      "template": "LeerCapitulo",
+      "baseUrl": "https://www.leercapitulo.co",
+      "allowedHosts": [
+        "leercapitulo.co",
+        "www.leercapitulo.co",
+        "leercapitulo.com",
+        "www.leercapitulo.com",
+        "i0.wp.com",
+        "i1.wp.com",
+        "i2.wp.com",
+        "blogger.googleusercontent.com"
+      ],
+      "requiresSession": true,
+      "ui": {
+        "idMode": "path",
+        "mangaPath": "/manga/",
+        "chapterPath": "/leer/",
+        "trailingSlash": true,
+        "iconUrl": "https://www.leercapitulo.co/favicon.ico",
+        "languages": [
+          "es"
+        ]
+      },
+      "operations": {
+        "search": {
+          "steps": [
+            {
+              "url": "{baseUrl}/manga/?q={query}&page={page}",
+              "capture": {
+                "nextUrl": {
+                  "selector": ".pagination a[rel=\"next\"], .pagination li:last-child a",
+                  "attributes": [
+                    "href"
+                  ],
+                  "transforms": [
+                    "absolute-url"
+                  ],
+                  "required": false
+                }
+              },
+              "extract": {
+                "kind": "html",
+                "selector": ".lc-card",
+                "emptySelector": ".lc-empty, .alert-info, .alert-warning",
+                "fields": {
+                  "title": {
+                    "selector": ".lc-card-name",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "url": {
+                    "selector": "a.lc-card-name",
+                    "attributes": [
+                      "href"
+                    ],
+                    "transforms": [
+                      "absolute-url"
+                    ],
+                    "required": true
+                  },
+                  "coverUrl": {
+                    "asset": true,
+                    "selector": "img",
+                    "attributes": [
+                      "data-src",
+                      "data-lazy-src",
+                      "data-cfsrc",
+                      "data-original",
+                      "srcset",
+                      "src"
+                    ],
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ],
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "detail": {
+          "steps": [
+            {
+              "url": "{manga.url}",
+              "extract": {
+                "kind": "html",
+                "fields": {
+                  "title": {
+                    "selector": "h1",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "coverUrl": {
+                    "asset": true,
+                    "selector": ".lc-cover-lg img, .cover img",
+                    "attributes": [
+                      "data-src",
+                      "data-lazy-src",
+                      "data-cfsrc",
+                      "data-original",
+                      "srcset",
+                      "src"
+                    ],
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ],
+                    "required": false
+                  },
+                  "description": {
+                    "selector": "#sinopsis p, .lc-description",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "author": {
+                    "selector": ".lc-facts .k",
+                    "label": "Autor",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "artist": {
+                    "selector": ".lc-facts .k",
+                    "label": "Dibujo",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "status": {
+                    "selector": ".lc-facts a[href*=\"status=\"]",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "genres": {
+                    "selector": "article a.badge[href*=\"/manga/?\"]",
+                    "all": true,
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "chapters": {
+          "steps": [
+            {
+              "url": "{manga.url}",
+              "extract": {
+                "kind": "html",
+                "selector": "a.lc-chapter-row, a[href*=\"/leer/\"]",
+                "fields": {
+                  "url": {
+                    "attributes": [
+                      "href"
+                    ],
+                    "transforms": [
+                      "absolute-url"
+                    ],
+                    "required": true
+                  },
+                  "name": {
+                    "selector": ".n, .name",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "uploadDate": {
+                    "selector": ".d, .date",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "pages": {
+          "steps": [
+            {
+              "url": "{chapter.url}",
+              "referer": "{baseUrl}",
+              "extract": {
+                "kind": "json",
+                "decoder": {
+                  "kind": "builtin",
+                  "name": "leercapitulo-pages"
+                },
+                "fields": {
+                  "url": {
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "mangadex",
+      "name": "MangaDex",
+      "baseUrl": "https://api.mangadex.org",
+      "allowedHosts": [
+        "api.mangadex.org",
+        "uploads.mangadex.org"
+      ],
+      "template": "CustomCSS",
+      "corsOpen": true,
+      "operations": {
+        "search": {
+          "steps": [
+            {
+              "url": "{baseUrl}/manga?title={query}&limit=20&offset={page}&includes[]=cover_art&contentRating[]=safe&contentRating[]=suggestive",
+              "capture": {
+                "total": {
+                  "path": "total"
+                }
+              },
+              "extract": {
+                "kind": "json",
+                "path": "data",
+                "allowEmpty": true,
+                "fields": {
+                  "item": {}
+                }
+              }
+            }
+          ]
+        },
+        "detail": {
+          "steps": [
+            {
+              "url": "{baseUrl}/manga/{manga.id}?includes[]=cover_art&includes[]=author&includes[]=artist",
+              "extract": {
+                "kind": "json",
+                "path": "data",
+                "fields": {
+                  "item": {}
+                }
+              }
+            }
+          ]
+        },
+        "chapters": {
+          "steps": [
+            {
+              "url": "{baseUrl}/manga/{manga.id}/feed?limit=100&offset={page}&order[chapter]=desc&includeExternalUrl=0&translatedLanguage[]=es&translatedLanguage[]=es-la",
+              "extract": {
+                "kind": "json",
+                "path": "data",
+                "allowEmpty": true,
+                "fields": {
+                  "item": {}
+                }
+              }
+            }
+          ]
+        },
+        "pages": {
+          "steps": [
+            {
+              "url": "{baseUrl}/at-home/server/{chapter.id}",
+              "extract": {
+                "kind": "json",
+                "fields": {
+                  "item": {}
+                }
+              }
+            }
+          ]
+        }
+      },
+      "catalog": {
+        "steps": [
+          {
+            "url": "{baseUrl}/manga?limit=20&offset={page}&includes[]=cover_art&order[followedCount]=desc&contentRating[]=safe&contentRating[]=suggestive",
+            "extract": {
+              "kind": "json",
+              "path": "data",
+              "allowEmpty": true,
+              "fields": {
+                "item": {}
+              }
+            }
+          }
+        ]
+      },
+      "latest": {
+        "steps": [
+          {
+            "url": "{baseUrl}/manga?limit=20&offset={page}&includes[]=cover_art&order[createdAt]=desc&contentRating[]=safe&contentRating[]=suggestive",
+            "extract": {
+              "kind": "json",
+              "path": "data",
+              "allowEmpty": true,
+              "fields": {
+                "item": {}
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "template": "Madara",
+      "requiresSession": true,
+      "ui": {
+        "idMode": "path",
+        "mangaPath": "/manga/",
+        "chapterPath": "/manga/",
+        "trailingSlash": true,
+        "iconUrl": "https://www.kazokuden.com/favicon.ico"
+      },
+      "catalog": {
+        "steps": [
+          {
+            "url": "{baseUrl}/?paged={page}",
+            "capture": {
+              "nextUrl": {
+                "selector": "a.next, .nav-previous a",
+                "attributes": [
+                  "href"
+                ],
+                "transforms": [
+                  "absolute-url"
+                ],
+                "required": false
+              }
+            },
+            "extract": {
+              "kind": "html",
+              "selector": ".page-item-detail",
+              "emptySelector": ".no-results",
+              "fields": {
+                "title": {
+                  "selector": ".post-title a",
+                  "transforms": [
+                    "trim"
+                  ],
+                  "required": true
+                },
+                "url": {
+                  "selector": ".post-title a",
+                  "attributes": [
+                    "href"
+                  ],
+                  "transforms": [
+                    "absolute-url"
+                  ],
+                  "required": true
+                },
+                "coverUrl": {
+                  "asset": true,
+                  "selector": "img",
+                  "attributes": [
+                    "data-src",
+                    "data-lazy-src",
+                    "data-cfsrc",
+                    "data-original",
+                    "srcset",
+                    "src"
+                  ],
+                  "transforms": [
+                    "trim",
+                    "absolute-url"
+                  ],
+                  "required": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "latest": {
+        "steps": [
+          {
+            "url": "{baseUrl}/?post_type=wp-manga&m_orderby=new-manga&paged={page}",
+            "capture": {
+              "nextUrl": {
+                "selector": "a.next, .nav-previous a",
+                "attributes": [
+                  "href"
+                ],
+                "transforms": [
+                  "absolute-url"
+                ],
+                "required": false
+              }
+            },
+            "extract": {
+              "kind": "html",
+              "selector": ".page-item-detail",
+              "emptySelector": ".no-results",
+              "fields": {
+                "title": {
+                  "selector": ".post-title a",
+                  "transforms": [
+                    "trim"
+                  ],
+                  "required": true
+                },
+                "url": {
+                  "selector": ".post-title a",
+                  "attributes": [
+                    "href"
+                  ],
+                  "transforms": [
+                    "absolute-url"
+                  ],
+                  "required": true
+                },
+                "coverUrl": {
+                  "asset": true,
+                  "selector": "img",
+                  "attributes": [
+                    "data-src",
+                    "data-lazy-src",
+                    "data-cfsrc",
+                    "data-original",
+                    "srcset",
+                    "src"
+                  ],
+                  "transforms": [
+                    "trim",
+                    "absolute-url"
+                  ],
+                  "required": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "id": "kazokuden",
+      "name": "Kazoku Den",
+      "baseUrl": "https://www.kazokuden.com",
+      "allowedHosts": [
+        "kazokuden.com",
+        "www.kazokuden.com",
+        "i0.wp.com",
+        "i1.wp.com",
+        "i2.wp.com",
+        "blogger.googleusercontent.com"
+      ],
+      "operations": {
+        "search": {
+          "steps": [
+            {
+              "url": "{baseUrl}/?s={query}&post_type=wp-manga&paged={page}",
+              "capture": {
+                "nextUrl": {
+                  "selector": "a.next, .nav-previous a",
+                  "attributes": [
+                    "href"
+                  ],
+                  "transforms": [
+                    "absolute-url"
+                  ],
+                  "required": false
+                }
+              },
+              "extract": {
+                "kind": "html",
+                "selector": ".c-tabs-item__content, .page-item-detail",
+                "emptySelector": ".no-results",
+                "fields": {
+                  "title": {
+                    "selector": ".post-title a",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "url": {
+                    "selector": ".post-title a",
+                    "attributes": [
+                      "href"
+                    ],
+                    "transforms": [
+                      "absolute-url"
+                    ],
+                    "required": true
+                  },
+                  "coverUrl": {
+                    "asset": true,
+                    "selector": "img",
+                    "attributes": [
+                      "data-src",
+                      "data-lazy-src",
+                      "data-cfsrc",
+                      "data-original",
+                      "srcset",
+                      "src"
+                    ],
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ],
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "detail": {
+          "steps": [
+            {
+              "url": "{manga.url}",
+              "extract": {
+                "kind": "html",
+                "fields": {
+                  "title": {
+                    "selector": ".post-title h1, h1",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "coverUrl": {
+                    "asset": true,
+                    "selector": ".summary_image img, .tab-summary img",
+                    "attributes": [
+                      "data-src",
+                      "data-lazy-src",
+                      "data-cfsrc",
+                      "data-original",
+                      "srcset",
+                      "src"
+                    ],
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ],
+                    "required": false
+                  },
+                  "description": {
+                    "selector": ".description-summary, .summary__content, .summary-content",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "author": {
+                    "selector": ".author-content",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "artist": {
+                    "selector": ".artist-content",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "genres": {
+                    "selector": ".genres-content a",
+                    "all": true,
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "status": {
+                    "selector": ".post-status .summary-content",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "chapters": {
+          "steps": [
+            {
+              "url": "{manga.url}",
+              "extract": {
+                "kind": "html",
+                "selector": ".wp-manga-chapter:not(.premium-block) a[href*=\"/manga/\"]",
+                "fields": {
+                  "name": {
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "url": {
+                    "attributes": [
+                      "href"
+                    ],
+                    "transforms": [
+                      "absolute-url"
+                    ],
+                    "required": true
+                  }
+                }
+              }
+            }
+          ],
+          "fallbacks": [
+            {
+              "steps": [
+                {
+                  "url": "{manga.url}/ajax/chapters/",
+                  "method": "POST",
+                  "referer": "{manga.url}",
+                  "extract": {
+                    "kind": "html",
+                    "selector": ".wp-manga-chapter:not(.premium-block) a[href*=\"/manga/\"]",
+                    "fields": {
+                      "name": {
+                        "transforms": [
+                          "trim"
+                        ],
+                        "required": true
+                      },
+                      "url": {
+                        "attributes": [
+                          "href"
+                        ],
+                        "transforms": [
+                          "absolute-url"
+                        ],
+                        "required": true
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "steps": [
+                {
+                  "url": "{manga.url}",
+                  "capture": {
+                    "postId": {
+                      "selector": "#manga-chapters-holder, .manga-chapters-holder",
+                      "attributes": [
+                        "data-id",
+                        "data-post-id"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "url": "{baseUrl}/wp-admin/admin-ajax.php",
+                  "method": "POST",
+                  "referer": "{manga.url}",
+                  "form": {
+                    "action": "manga_get_chapters",
+                    "manga": "{prev.postId}"
+                  },
+                  "extract": {
+                    "kind": "html",
+                    "selector": ".wp-manga-chapter:not(.premium-block) a[href*=\"/manga/\"]",
+                    "fields": {
+                      "name": {
+                        "transforms": [
+                          "trim"
+                        ],
+                        "required": true
+                      },
+                      "url": {
+                        "attributes": [
+                          "href"
+                        ],
+                        "transforms": [
+                          "absolute-url"
+                        ],
+                        "required": true
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "pages": {
+          "steps": [
+            {
+              "url": "{chapter.url}",
+              "referer": "{manga.url}",
+              "extract": {
+                "kind": "html",
+                "selector": ".reading-content img, .page-break img, .wp-manga-chapter-img",
+                "fields": {
+                  "url": {
+                    "asset": true,
+                    "attributes": [
+                      "data-src",
+                      "data-lazy-src",
+                      "data-cfsrc",
+                      "data-original",
+                      "srcset",
+                      "src"
+                    ],
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ],
+                    "required": true
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "anzmanga",
+      "name": "AnzManga",
+      "baseUrl": "https://www.anzmanga25.com",
+      "allowedHosts": [
+        "anzmanga25.com",
+        "www.anzmanga25.com",
+        "i0.wp.com",
+        "i1.wp.com",
+        "i2.wp.com",
+        "blogger.googleusercontent.com"
+      ],
+      "template": "CustomCSS",
+      "requiresSession": true,
+      "ui": {
+        "idMode": "url",
+        "mangaPath": "/manga/",
+        "chapterPath": "/manga/",
+        "iconUrl": "https://www.anzmanga25.com/favicon.ico",
+        "coverPath": "/uploads/manga/{manga.id}/cover/cover_250x350.jpg",
+        "paginationParams": {
+          "sortBy": "views",
+          "asc": "false"
+        },
+        "languages": [
+          "es"
+        ]
+      },
+      "catalog": {
+        "steps": [
+          {
+            "url": "{baseUrl}/filterList?page={page}&sortBy=views&asc=false",
+            "capture": {
+              "nextUrl": {
+                "selector": "a[rel=\"next\"], a.next",
+                "attributes": [
+                  "href"
+                ],
+                "transforms": [
+                  "absolute-url"
+                ],
+                "required": false
+              }
+            },
+            "extract": {
+              "kind": "html",
+              "selector": "div.col-sm-6 > div.media",
+              "emptySelector": ".no-results",
+              "fields": {
+                "title": {
+                  "selector": ".media-heading a, h4 a",
+                  "transforms": [
+                    "trim"
+                  ],
+                  "required": true
+                },
+                "url": {
+                  "selector": ".media-heading a, h4 a",
+                  "attributes": [
+                    "href"
+                  ],
+                  "transforms": [
+                    "absolute-url"
+                  ],
+                  "required": true
+                },
+                "coverUrl": {
+                  "asset": true,
+                  "selector": "img",
+                  "attributes": [
+                    "data-src",
+                    "data-lazy-src",
+                    "data-cfsrc",
+                    "data-original",
+                    "srcset",
+                    "src"
+                  ],
+                  "transforms": [
+                    "trim",
+                    "absolute-url"
+                  ],
+                  "required": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "operations": {
+        "search": {
+          "steps": [
+            {
+              "url": "{baseUrl}/search?query={query}",
+              "extract": {
+                "kind": "json",
+                "path": "suggestions",
+                "allowEmpty": true,
+                "fields": {
+                  "title": {
+                    "path": "value"
+                  },
+                  "slug": {
+                    "path": "data"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "detail": {
+          "steps": [
+            {
+              "url": "{manga.url}",
+              "extract": {
+                "kind": "html",
+                "fields": {
+                  "title": {
+                    "selector": "h2.widget-title",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "coverUrl": {
+                    "asset": true,
+                    "selector": ".boxed img",
+                    "attributes": [
+                      "data-src",
+                      "data-lazy-src",
+                      "data-cfsrc",
+                      "data-original",
+                      "srcset",
+                      "src"
+                    ],
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ],
+                    "required": false
+                  },
+                  "description": {
+                    "selector": "div.well p",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "author": {
+                    "selector": "dt",
+                    "label": "Autor(es)",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "artist": {
+                    "selector": "dt",
+                    "label": "Artist(s)",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "status": {
+                    "selector": "dt",
+                    "label": "Estado",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "genres": {
+                    "selector": "dt",
+                    "label": "Categorías",
+                    "valueSelector": "a",
+                    "all": true,
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "chapters": {
+          "steps": [
+            {
+              "url": "{manga.url}",
+              "extract": {
+                "kind": "html",
+                "selector": "ul.chapters h5.chapter-title-rtl a",
+                "fields": {
+                  "name": {
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "url": {
+                    "attributes": [
+                      "href"
+                    ],
+                    "transforms": [
+                      "absolute-url"
+                    ],
+                    "required": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "pages": {
+          "steps": [
+            {
+              "url": "{chapter.url}",
+              "referer": "{baseUrl}",
+              "extract": {
+                "kind": "html",
+                "selector": "div#all img.img-responsive",
+                "fields": {
+                  "url": {
+                    "asset": true,
+                    "attributes": [
+                      "data-src",
+                      "data-lazy-src",
+                      "data-cfsrc",
+                      "data-original",
+                      "srcset",
+                      "src"
+                    ],
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ],
+                    "required": true
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "dbnewhope",
+      "name": "DB New Hope",
+      "baseUrl": "https://dbnewhope.com",
+      "allowedHosts": [
+        "dbnewhope.com",
+        "www.dbnewhope.com"
+      ],
+      "template": "CustomCSS",
+      "corsOpen": false,
+      "ui": {
+        "idMode": "url",
+        "mangaPath": "/espanol/",
+        "chapterPath": "/espanol/",
+        "trailingSlash": false,
+        "languages": [
+          "es"
+        ],
+        "iconUrl": "https://dbnewhope.com/favicon.ico"
+      },
+      "catalog": {
+        "steps": [
+          {
+            "url": "{baseUrl}/espanol.php",
+            "extract": {
+              "kind": "html",
+              "selector": "header.masthead",
+              "fields": {
+                "title": {
+                  "selector": "h1.masthead-heading",
+                  "transforms": [
+                    "trim"
+                  ],
+                  "required": true
+                },
+                "url": {
+                  "selector": "a[href*=\"capitulos.php\"]",
+                  "attributes": [
+                    "href"
+                  ],
+                  "transforms": [
+                    "absolute-url"
+                  ],
+                  "required": true
+                },
+                "coverUrl": {
+                  "asset": true,
+                  "selector": "img.masthead-avatar",
+                  "attributes": [
+                    "data-src",
+                    "data-lazy-src",
+                    "data-cfsrc",
+                    "data-original",
+                    "srcset",
+                    "src"
+                  ],
+                  "transforms": [
+                    "trim",
+                    "absolute-url"
+                  ],
+                  "required": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "operations": {
+        "search": {
+          "steps": [
+            {
+              "url": "{baseUrl}/espanol.php",
+              "extract": {
+                "kind": "html",
+                "selector": "header.masthead",
+                "fields": {
+                  "title": {
+                    "selector": "h1.masthead-heading",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "url": {
+                    "selector": "a[href*=\"capitulos.php\"]",
+                    "attributes": [
+                      "href"
+                    ],
+                    "transforms": [
+                      "absolute-url"
+                    ],
+                    "required": true
+                  },
+                  "coverUrl": {
+                    "asset": true,
+                    "selector": "img.masthead-avatar",
+                    "attributes": [
+                      "data-src",
+                      "data-lazy-src",
+                      "data-cfsrc",
+                      "data-original",
+                      "srcset",
+                      "src"
+                    ],
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ],
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "detail": {
+          "steps": [
+            {
+              "url": "{baseUrl}/espanol.php",
+              "extract": {
+                "kind": "html",
+                "fields": {
+                  "title": {
+                    "selector": "h1.masthead-heading",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "coverUrl": {
+                    "asset": true,
+                    "selector": "img.masthead-avatar",
+                    "attributes": [
+                      "data-src",
+                      "data-lazy-src",
+                      "data-cfsrc",
+                      "data-original",
+                      "srcset",
+                      "src"
+                    ],
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ],
+                    "required": false
+                  },
+                  "description": {
+                    "selector": "header p.masthead-subheading",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "chapters": {
+          "steps": [
+            {
+              "url": "{baseUrl}/espanol/capitulos.php",
+              "extract": {
+                "kind": "html",
+                "selector": ".card",
+                "fields": {
+                  "name": {
+                    "selector": ".card-title",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "url": {
+                    "selector": "a[href]",
+                    "attributes": [
+                      "href"
+                    ],
+                    "transforms": [
+                      "absolute-url"
+                    ],
+                    "required": true
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "pages": {
+          "steps": [
+            {
+              "url": "{chapter.url}",
+              "referer": "{baseUrl}/",
+              "extract": {
+                "kind": "html",
+                "selector": "img.manga-page",
+                "fields": {
+                  "url": {
+                    "asset": true,
+                    "attributes": [
+                      "data-src",
+                      "data-lazy-src",
+                      "data-cfsrc",
+                      "data-original",
+                      "srcset",
+                      "src"
+                    ],
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ],
+                    "required": true
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "marmota",
+      "name": "Marmota",
+      "baseUrl": "https://marmota.me",
+      "allowedHosts": [
+        "marmota.me",
+        "www.marmota.me",
+        "i0.wp.com",
+        "i1.wp.com",
+        "i2.wp.com"
+      ],
+      "template": "Madara",
+      "requiresSession": true,
+      "ui": {
+        "idMode": "path",
+        "mangaPath": "/comic/",
+        "chapterPath": "/comic/",
+        "trailingSlash": true,
+        "iconUrl": "https://marmota.me/favicon.ico",
+        "languages": [
+          "es"
+        ]
+      },
+      "catalog": {
+        "steps": [
+          {
+            "url": "{baseUrl}/?paged={page}",
+            "capture": {
+              "nextUrl": {
+                "selector": "a.next, .nav-previous a",
+                "attributes": [
+                  "href"
+                ],
+                "transforms": [
+                  "absolute-url"
+                ],
+                "required": false
+              }
+            },
+            "extract": {
+              "kind": "html",
+              "selector": ".page-item-detail",
+              "emptySelector": ".no-results",
+              "fields": {
+                "title": {
+                  "selector": ".post-title a",
+                  "transforms": [
+                    "trim"
+                  ],
+                  "required": true
+                },
+                "url": {
+                  "selector": ".post-title a",
+                  "attributes": [
+                    "href"
+                  ],
+                  "transforms": [
+                    "absolute-url"
+                  ],
+                  "required": true
+                },
+                "coverUrl": {
+                  "asset": true,
+                  "selector": "img",
+                  "attributes": [
+                    "data-src",
+                    "data-lazy-src",
+                    "data-cfsrc",
+                    "data-original",
+                    "srcset",
+                    "src"
+                  ],
+                  "transforms": [
+                    "trim",
+                    "absolute-url"
+                  ],
+                  "required": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "operations": {
+        "search": {
+          "steps": [
+            {
+              "url": "{baseUrl}/?s={query}&post_type=wp-manga&paged={page}",
+              "capture": {
+                "nextUrl": {
+                  "selector": "a.next, .nav-previous a",
+                  "attributes": [
+                    "href"
+                  ],
+                  "transforms": [
+                    "absolute-url"
+                  ],
+                  "required": false
+                }
+              },
+              "extract": {
+                "kind": "html",
+                "selector": ".c-tabs-item__content, .page-item-detail",
+                "emptySelector": ".no-results",
+                "fields": {
+                  "title": {
+                    "selector": ".post-title a",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "url": {
+                    "selector": ".post-title a",
+                    "attributes": [
+                      "href"
+                    ],
+                    "transforms": [
+                      "absolute-url"
+                    ],
+                    "required": true
+                  },
+                  "coverUrl": {
+                    "asset": true,
+                    "selector": "img",
+                    "attributes": [
+                      "data-src",
+                      "data-lazy-src",
+                      "data-cfsrc",
+                      "data-original",
+                      "srcset",
+                      "src"
+                    ],
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ],
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "detail": {
+          "steps": [
+            {
+              "url": "{manga.url}",
+              "extract": {
+                "kind": "html",
+                "fields": {
+                  "title": {
+                    "selector": ".post-title h1, h1",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "coverUrl": {
+                    "asset": true,
+                    "selector": ".summary_image img, .tab-summary img",
+                    "attributes": [
+                      "data-src",
+                      "data-lazy-src",
+                      "data-cfsrc",
+                      "data-original",
+                      "srcset",
+                      "src"
+                    ],
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ],
+                    "required": false
+                  },
+                  "description": {
+                    "selector": ".description-summary, .summary__content, .summary-content",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "author": {
+                    "selector": ".author-content",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "artist": {
+                    "selector": ".artist-content",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "genres": {
+                    "selector": ".genres-content a",
+                    "all": true,
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  },
+                  "status": {
+                    "selector": ".post-status .summary-content",
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "chapters": {
+          "steps": [
+            {
+              "url": "{manga.url}/ajax/chapters/",
+              "method": "POST",
+              "referer": "{manga.url}",
+              "extract": {
+                "kind": "html",
+                "selector": ".wp-manga-chapter:not(.premium-block) a[href*=\"/comic/\"]",
+                "fields": {
+                  "name": {
+                    "transforms": [
+                      "trim"
+                    ],
+                    "required": true
+                  },
+                  "url": {
+                    "attributes": [
+                      "href"
+                    ],
+                    "transforms": [
+                      "absolute-url"
+                    ],
+                    "required": true
+                  }
+                }
+              }
+            }
+          ],
+          "fallbacks": [
+            {
+              "steps": [
+                {
+                  "url": "{manga.url}",
+                  "extract": {
+                    "kind": "html",
+                    "selector": ".wp-manga-chapter:not(.premium-block) a[href*=\"/comic/\"]",
+                    "fields": {
+                      "name": {
+                        "transforms": [
+                          "trim"
+                        ],
+                        "required": true
+                      },
+                      "url": {
+                        "attributes": [
+                          "href"
+                        ],
+                        "transforms": [
+                          "absolute-url"
+                        ],
+                        "required": true
+                      }
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "steps": [
+                {
+                  "url": "{manga.url}",
+                  "capture": {
+                    "postId": {
+                      "selector": "#manga-chapters-holder, .manga-chapters-holder",
+                      "attributes": [
+                        "data-id",
+                        "data-post-id"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "url": "{baseUrl}/wp-admin/admin-ajax.php",
+                  "method": "POST",
+                  "referer": "{manga.url}",
+                  "form": {
+                    "action": "manga_get_chapters",
+                    "manga": "{prev.postId}"
+                  },
+                  "extract": {
+                    "kind": "html",
+                    "selector": ".wp-manga-chapter:not(.premium-block) a[href*=\"/comic/\"]",
+                    "fields": {
+                      "name": {
+                        "transforms": [
+                          "trim"
+                        ],
+                        "required": true
+                      },
+                      "url": {
+                        "attributes": [
+                          "href"
+                        ],
+                        "transforms": [
+                          "absolute-url"
+                        ],
+                        "required": true
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "pages": {
+          "steps": [
+            {
+              "url": "{chapter.url}",
+              "referer": "{manga.url}",
+              "extract": {
+                "kind": "html",
+                "selector": ".reading-content img, .page-break img, .wp-manga-chapter-img",
+                "fields": {
+                  "url": {
+                    "asset": true,
+                    "attributes": [
+                      "data-src",
+                      "data-lazy-src",
+                      "data-cfsrc",
+                      "data-original",
+                      "srcset",
+                      "src"
+                    ],
+                    "transforms": [
+                      "trim",
+                      "absolute-url"
+                    ],
+                    "required": true
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "latest": {
+        "steps": [
+          {
+            "url": "{baseUrl}/?post_type=wp-manga&m_orderby=new-manga&paged={page}",
+            "capture": {
+              "nextUrl": {
+                "selector": "a.next, .nav-previous a",
+                "attributes": [
+                  "href"
+                ],
+                "transforms": [
+                  "absolute-url"
+                ],
+                "required": false
+              }
+            },
+            "extract": {
+              "kind": "html",
+              "selector": ".page-item-detail",
+              "emptySelector": ".no-results",
+              "fields": {
+                "title": {
+                  "selector": ".post-title a",
+                  "transforms": [
+                    "trim"
+                  ],
+                  "required": true
+                },
+                "url": {
+                  "selector": ".post-title a",
+                  "attributes": [
+                    "href"
+                  ],
+                  "transforms": [
+                    "absolute-url"
+                  ],
+                  "required": true
+                },
+                "coverUrl": {
+                  "asset": true,
+                  "selector": "img",
+                  "attributes": [
+                    "data-src",
+                    "data-lazy-src",
+                    "data-cfsrc",
+                    "data-original",
+                    "srcset",
+                    "src"
+                  ],
+                  "transforms": [
+                    "trim",
+                    "absolute-url"
+                  ],
+                  "required": false
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "id": "comparticomics",
+      "name": "CompartiComics",
+      "baseUrl": "https://comparticomics.lat",
+      "allowedHosts": [
+        "comparticomics.lat"
+      ],
+      "template": "CustomCSS",
+      "requiresSession": true,
+      "cacheTtlMs": 300000,
+      "ui": {
+        "iconUrl": "https://comparticomics.lat/favicon.ico",
+        "mangaPath": "/comic/",
+        "chapterPath": "/api/download/",
+        "idMode": "path",
+        "languages": [
+          "es"
+        ],
+        "pageSize": 40,
+        "latestOrder": "added",
+        "chapterDelivery": "external-file"
+      },
+      "operations": {
+        "search": {
+          "steps": [
+            {
+              "url": "{baseUrl}/api/groups?page={page}&sort=relevance&unpin=1&q={query}",
+              "extract": {
+                "kind": "json",
+                "decoder": {
+                  "kind": "builtin",
+                  "name": "comparticomics-catalog"
+                },
+                "allowEmpty": true,
+                "fields": {
+                  "title": {
+                    "path": "title",
+                    "required": true
+                  },
+                  "url": {
+                    "path": "url",
+                    "required": true,
+                    "transforms": [
+                      "absolute-url"
+                    ]
+                  },
+                  "coverUrl": {
+                    "path": "coverUrl",
+                    "required": false,
+                    "asset": true,
+                    "transforms": [
+                      "absolute-url"
+                    ]
+                  },
+                  "author": {
+                    "path": "author",
+                    "required": false
+                  },
+                  "description": {
+                    "path": "description",
+                    "required": false
+                  },
+                  "genres": {
+                    "path": "genres",
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "detail": {
+          "steps": [
+            {
+              "url": "{baseUrl}/api/group/{manga.id}",
+              "extract": {
+                "kind": "json",
+                "decoder": {
+                  "kind": "builtin",
+                  "name": "comparticomics-detail"
+                },
+                "allowEmpty": true,
+                "fields": {
+                  "title": {
+                    "path": "title",
+                    "required": true
+                  },
+                  "url": {
+                    "path": "url",
+                    "required": true,
+                    "transforms": [
+                      "absolute-url"
+                    ]
+                  },
+                  "coverUrl": {
+                    "path": "coverUrl",
+                    "required": false,
+                    "asset": true,
+                    "transforms": [
+                      "absolute-url"
+                    ]
+                  },
+                  "author": {
+                    "path": "author",
+                    "required": false
+                  },
+                  "description": {
+                    "path": "description",
+                    "required": false
+                  },
+                  "genres": {
+                    "path": "genres",
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "chapters": {
+          "steps": [
+            {
+              "url": "{baseUrl}/api/group/{manga.id}",
+              "extract": {
+                "kind": "json",
+                "decoder": {
+                  "kind": "builtin",
+                  "name": "comparticomics-chapters"
+                },
+                "allowEmpty": true,
+                "fields": {
+                  "name": {
+                    "path": "name"
+                  },
+                  "url": {
+                    "path": "url",
+                    "transforms": [
+                      "absolute-url"
+                    ]
+                  },
+                  "uploadDate": {
+                    "path": "uploadDate",
+                    "required": false
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "pages": {
+          "steps": [
+            {
+              "url": "{baseUrl}/api/download_check/{chapter.id}",
+              "extract": {
+                "kind": "json",
+                "fields": {
+                  "allowed": {
+                    "path": "allowed"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "catalog": {
+        "steps": [
+          {
+            "url": "{baseUrl}/api/groups?page={page}&sort=downloads&unpin=1",
+            "extract": {
+              "kind": "json",
+              "decoder": {
+                "kind": "builtin",
+                "name": "comparticomics-catalog"
+              },
+              "allowEmpty": true,
+              "fields": {
+                "title": {
+                  "path": "title",
+                  "required": true
+                },
+                "url": {
+                  "path": "url",
+                  "required": true,
+                  "transforms": [
+                    "absolute-url"
+                  ]
+                },
+                "coverUrl": {
+                  "path": "coverUrl",
+                  "required": false,
+                  "asset": true,
+                  "transforms": [
+                    "absolute-url"
+                  ]
+                },
+                "author": {
+                  "path": "author",
+                  "required": false
+                },
+                "description": {
+                  "path": "description",
+                  "required": false
+                },
+                "genres": {
+                  "path": "genres",
+                  "required": false
+                }
+              }
+            }
+          }
+        ]
+      },
+      "latest": {
+        "steps": [
+          {
+            "url": "{baseUrl}/api/groups?page={page}&sort=newest&unpin=1",
+            "extract": {
+              "kind": "json",
+              "decoder": {
+                "kind": "builtin",
+                "name": "comparticomics-catalog"
+              },
+              "allowEmpty": true,
+              "fields": {
+                "title": {
+                  "path": "title",
+                  "required": true
+                },
+                "url": {
+                  "path": "url",
+                  "required": true,
+                  "transforms": [
+                    "absolute-url"
+                  ]
+                },
+                "coverUrl": {
+                  "path": "coverUrl",
+                  "required": false,
+                  "asset": true,
+                  "transforms": [
+                    "absolute-url"
+                  ]
+                },
+                "author": {
+                  "path": "author",
+                  "required": false
+                },
+                "description": {
+                  "path": "description",
+                  "required": false
+                },
+                "genres": {
+                  "path": "genres",
+                  "required": false
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
