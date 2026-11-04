@@ -16,7 +16,8 @@
         "i0.wp.com",
         "i1.wp.com",
         "i2.wp.com",
-        "blogger.googleusercontent.com"
+        "blogger.googleusercontent.com",
+        "es1s11-95168.t34798ndc.com"
       ],
       "requiresSession": true,
       "ui": {
@@ -1205,6 +1206,14 @@
                     ],
                     "required": true
                   }
+                }
+              },
+              "capture": {
+                "nextUrl": {
+                  "selector": ".image-wrapper > a[href^='?page=']",
+                  "attributes": [
+                    "href"
+                  ]
                 }
               }
             }
