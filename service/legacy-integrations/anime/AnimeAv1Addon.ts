@@ -3,7 +3,7 @@ import { extractOk, extractVoe } from "../../src/yomiri/anime/AnimeExtractor.ts"
 import { createDecipheriv, createHash } from "node:crypto";
 
 async function unwrapKatanime(url: string): Promise<string> {
-  const response = await fetch(url, { redirect: "error", signal: AbortSignal.timeout(8000) });
+  const response = await fetch(url, { redirect: "manual", signal: AbortSignal.timeout(8000) });
   if (!response.ok) return "";
   const literal = /\bvar e = '([^']+)'/.exec(await response.text())?.[1];
   if (!literal) return "";
@@ -29,7 +29,7 @@ async function directStream(server: AnimeServer) {
     const embed = server.name.toLowerCase() === "voe" && server.url.startsWith("https://katanime.net/reproductor?url=")
       ? await unwrapKatanime(server.url) : server.url;
     if (/^https:\/\/ok\.ru\/videoembed\/\d+(?:\?|$)/i.test(embed)) {
-      const stream = await extractOk(embed, input => fetch(input, { redirect: "error", signal: AbortSignal.timeout(8000) }));
+      const stream = await extractOk(embed, input => fetch(input, { redirect: "manual", signal: AbortSignal.timeout(8000) }));
       return stream?.rawUrl ? [stream.isM3U8 ? { title, m3u8Url: stream.rawUrl } : { title, url: stream.rawUrl }] : [];
     }
     if (!/^https:\/\/(?:voe\.sx|shannoncoldalready\.com)\/e\/[a-z0-9]+$/i.test(embed)) return [];
@@ -38,7 +38,7 @@ async function directStream(server: AnimeServer) {
       if (!/^https:\/\/(?:voe\.sx|shannoncoldalready\.com)\/e\/[a-z0-9]+$/i.test(url.href)) {
         throw new Error("Página de video fuera del proveedor admitido");
       }
-      return fetch(url, { ...init, redirect: "error", signal: AbortSignal.timeout(8000) });
+      return fetch(url, { ...init, redirect: "manual", signal: AbortSignal.timeout(8000) });
     });
     return stream?.rawUrl ? [stream.isM3U8 ? { title, m3u8Url: stream.rawUrl } : { title, url: stream.rawUrl }] : [];
   } catch {
@@ -52,6 +52,9 @@ export function createAnimeAddon(source: AnimeSource) {
     name: source.name,
     version: "1.0.0",
     description: "Catálogo de anime mediante un servicio externo.",
+    author: "iamdecherre",
+    repository: "https://github.com/iamdecherre/fuentes",
+    icon: new URL("/favicon.ico", source.website).href,
     types: ["anime"],
     resources: ["catalog", "meta", "stream"],
     catalogs: [{ type: "anime", id: source.id, name: source.name, extra: [{ name: "search" }] }],
@@ -87,7 +90,8 @@ export function createAnimeAddon(source: AnimeSource) {
         return json({ streams: (await Promise.all(servers.map(directStream))).flat() });
       }
       return json({ error: "Catálogo no encontrado" }, 404);
-    } catch {
+    } catch (cause) {
+      console.error(source.id, cause instanceof Error ? cause.message : String(cause));
       return json({ error: "La fuente no respondió con datos utilizables" }, 502);
     }
   };

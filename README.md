@@ -1,5 +1,7 @@
 # iamdecherre
 
+Agregá `https://github.com/iamdecherre/fuentes` en **Yomiri → Fuentes → Agregar repositorio**. El índice ofrece AnimeYT, Katanime y MonosChinos como complementos HTTPS que se instalan individualmente. JKAnime está en el código del servicio y queda fuera del índice público mientras su sitio devuelve HTTP 403 desde el alojamiento.
+
 ## Catálogos separados
 
 - Manga: https://raw.githubusercontent.com/iamdecherre/fuentes/main/manga.json
@@ -23,7 +25,7 @@ Incluye conectores para MangaDex, LeerCapítulo, Kazoku Den, AnzManga, DB New Ho
 
 El catálogo usa conectores de Yomiri y perfiles declarativos. No descarga APKs ni ejecuta código remoto. La disponibilidad de cada señal o catálogo depende de su proveedor.
 
-`index.json` conserva el catálogo anterior para versiones anteriores de Yomiri.
+`index.json` conserva CompartiComics y agrega los manifiestos de los complementos HTTPS.
 
 ## Servicio independiente de anime y fútbol
 
