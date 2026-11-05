@@ -1,6 +1,7 @@
 import type { AnimeServer, AnimeSource, AnimeTitle } from "../../src/yomiri/anime/types.ts";
 import { extractOk, extractVoe } from "../../src/yomiri/anime/AnimeExtractor.ts";
 import { createDecipheriv, createHash } from "node:crypto";
+import { mediaLink } from "../../MediaRelay.ts";
 
 async function unwrapKatanime(url: string): Promise<string> {
   const response = await fetch(url, { redirect: "manual", signal: AbortSignal.timeout(8000) });
@@ -19,7 +20,7 @@ async function unwrapKatanime(url: string): Promise<string> {
   return JSON.parse(Buffer.concat([decipher.update(Buffer.from(data.ct, "base64")), decipher.final()]).toString("utf8"));
 }
 
-async function directStream(server: AnimeServer) {
+async function directStream(server: AnimeServer, relay?: { origin: string; secret: string }) {
   if (server.unavailableReason) return [];
   const title = [server.name, server.language].filter(Boolean).join(" · ");
   if (server.delivery === "hls") return [{ title, m3u8Url: server.url }];
@@ -39,6 +40,10 @@ async function directStream(server: AnimeServer) {
       }
       return fetch(url, { ...init, redirect: "manual", signal: AbortSignal.timeout(8000) });
     });
+    if (relay && stream?.rawUrl) {
+      const url = mediaLink(relay.origin, stream.rawUrl, new URL(embed).origin + "/", relay.secret);
+      return [stream.isM3U8 ? { title, m3u8Url: url } : { title, url }];
+    }
     return stream?.rawUrl ? [stream.isM3U8 ? { title, m3u8Url: stream.rawUrl } : { title, url: stream.rawUrl }] : [];
   } catch {
     return [];
@@ -61,7 +66,7 @@ export function createAnimeAddon(source: AnimeSource) {
   const meta = (title: AnimeTitle) => ({
     id: title.id, type: "anime", name: title.title, poster: title.coverUrl,
   });
-  return async (request: Request): Promise<Response> => {
+  return async (request: Request, mediaSecret?: string): Promise<Response> => {
     const headers = { "Access-Control-Allow-Origin": "*" };
     const json = (value: unknown, status = 200) => Response.json(value, { status, headers });
     if (request.method !== "GET") return json({ error: "Método no admitido" }, 405);
@@ -90,11 +95,12 @@ export function createAnimeAddon(source: AnimeSource) {
           const voe = servers.find(server => /^voe$/i.test(server.name));
           const embedUrl = source.id === "katanime" && voe?.url.startsWith("https://katanime.net/reproductor?url=")
             ? await unwrapKatanime(voe.url) : voe?.url;
-          const streams = embedUrl && /^https:\/\/(?:voe\.sx|shannoncoldalready\.com)\/e\/[a-z0-9]+$/i.test(embedUrl)
-            ? [{ title: "VOE", embedUrl }] : [];
+          const streams = voe && embedUrl && mediaSecret
+            ? await directStream({ ...voe, url: embedUrl }, { origin: new URL(request.url).origin, secret: mediaSecret })
+            : [];
           return json({ streams });
         }
-        return json({ streams: (await Promise.all(servers.map(directStream))).flat() });
+        return json({ streams: (await Promise.all(servers.map(server => directStream(server)))).flat() });
       }
       return json({ error: "Catálogo no encontrado" }, 404);
     } catch (cause) {

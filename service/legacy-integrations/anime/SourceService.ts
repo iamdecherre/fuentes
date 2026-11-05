@@ -72,7 +72,7 @@ async function rbtvAddon(request: Request) {
   const signals = await loadRbtvSignals(decodeURIComponent(match[1]), rbtvRequest);
   return Response.json({ streams: signals.map(signal => ({ title: signal.name, m3u8Url: signal.url })) });
 }
-export async function serveSources(request: Request, publicBase?: string): Promise<Response> {
+export async function serveSources(request: Request, publicBase?: string, mediaSecret?: string): Promise<Response> {
   const url = new URL(request.url);
   const path = url.pathname;
   if (request.method !== "GET") return new Response(null, { status: 405, headers: { Allow: "GET" } });
@@ -86,7 +86,7 @@ export async function serveSources(request: Request, publicBase?: string): Promi
     const addon = sourceId === "rbtvplus" ? rbtvAddon : addons.get(sourceId);
     if (!addon) return Response.json({ error: "Fuente no encontrada" }, { status: 404 });
     url.pathname = path.slice(sourceId.length + 1);
-    const response = await sessions.run(new Map(), () => addon(new Request(url)));
+    const response = await sessions.run(new Map(), () => addon(new Request(url), mediaSecret));
     const headers = new Headers(response.headers);
     headers.set("Access-Control-Allow-Origin", "*");
     return new Response(response.body, { status: response.status, headers });

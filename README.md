@@ -1,5 +1,7 @@
 # iamdecherre
 
+Para desplegar el Worker de Katanime y MonosChinos, configurá el secreto `MEDIA_SIGNING_KEY` con una clave aleatoria de al menos 32 bytes. El Worker firma los enlaces temporales de las playlists HLS y sus segmentos para el reproductor de Yomiri.
+
 Agregá `https://github.com/iamdecherre/fuentes` en **Yomiri → Fuentes → Agregar repositorio**. El índice ofrece AnimeYT, Katanime y MonosChinos como complementos HTTPS que se instalan individualmente. JKAnime está en el código del servicio y queda fuera del índice público mientras su sitio devuelve HTTP 403 desde el alojamiento.
 
 ## Catálogos separados
