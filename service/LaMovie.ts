@@ -62,7 +62,7 @@ export async function laMovie(request: Request) {
         clientResolver: {
           kind: "packed-player-hls", url: item.url,
           referer: "https://lamovie.la/",
-          allowedHosts: ["vimeos.net", "lamovie.la", "vimeos.zip", "*.vimeos.zip"],
+          allowedHosts: ["vimeos.net", "*.vimeos.net", "lamovie.la", "vimeos.zip", "*.vimeos.zip"],
         },
       }];
     });
