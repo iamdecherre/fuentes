@@ -2,7 +2,6 @@
   "format": "yomiri.repository.v1",
   "name": "iamdecherre",
   "addons": [
-    "https://fuentes-adapters.dokkandle.workers.dev/blender/manifest.json",
     "https://fuentes-adapters.dokkandle.workers.dev/animeyt/manifest.json",
     "https://fuentes-adapters.dokkandle.workers.dev/katanime/manifest.json",
     "https://fuentes-adapters.dokkandle.workers.dev/monoschinos/manifest.json"
