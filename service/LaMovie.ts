@@ -53,7 +53,20 @@ export async function laMovie(request: Request) {
       if (!result.data || String(result.data._id) !== filmId[1]) return json({ error: "Ficha no encontrada" }, 404);
       return json({ meta: metadata(result.data) });
     }
-    return json({ streams: [] });
+    const result = await read<{ data?: { embeds?: { url?: string; server?: string; lang?: string }[] } }>(
+      "/player?" + new URLSearchParams({ postId: filmId[1], demo: "0" }));
+    const streams = (result.data?.embeds ?? []).flatMap(item => {
+      if (!item.url || !/^https:\/\/vimeos\.net\/embed-[a-z0-9]+\.html$/.test(item.url)) return [];
+      return [{
+        title: ["LaMovie", item.lang].filter(Boolean).join(" · "),
+        clientResolver: {
+          kind: "packed-player-hls", url: item.url,
+          referer: "https://lamovie.la/",
+          allowedHosts: ["vimeos.net", "lamovie.la", "vimeos.zip", "*.vimeos.zip"],
+        },
+      }];
+    });
+    return json({ streams });
   } catch {
     return json({ error: "LaMovie no respondió con datos utilizables" }, 502);
   }
