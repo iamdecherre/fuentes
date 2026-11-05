@@ -57,13 +57,13 @@ export async function laMovie(request: Request) {
       if (!result.data || String(result.data._id) !== filmId[1]) return json({ error: "Ficha no encontrada" }, 404);
       if (type === "movie") return json({ meta: metadata(result.data, type) });
       type EpisodePage = { data?: {
-        posts?: { _id: number; title: string; slug: string; season_number: number; episode_number: number }[];
+        posts?: { _id: number; title: string; slug: string; season_number: number; episode_number: number; still_path?: string }[];
         seasons?: string[]; pagination?: { last_page?: number };
       } };
       const load = (season: string, page: number) => read<EpisodePage>("/single/episodes/list?" +
         new URLSearchParams({ _id: filmId[1], season, page: String(page) }));
       const first = await load("1", 1);
-      const videos = new Map<string, { id: string; title: string; season: number; episode: number }>();
+      const videos = new Map<string, { id: string; title: string; season: number; episode: number; thumbnail?: string }>();
       for (const season of first.data?.seasons ?? ["1"]) {
         if (!/^\d+$/.test(season)) continue;
         let last = 1;
@@ -73,7 +73,8 @@ export async function laMovie(request: Request) {
           if (!Number.isInteger(last) || last < 1 || last > 100) throw new Error("Paginación inválida");
           for (const episode of response.data?.posts ?? []) {
             const id = "lamovie:" + episode._id + ":" + episode.slug;
-            videos.set(id, { id, title: episode.title, season: episode.season_number, episode: episode.episode_number });
+            videos.set(id, { id, title: episode.title, season: episode.season_number, episode: episode.episode_number,
+              thumbnail: episode.still_path?.startsWith("/") ? "https://image.tmdb.org/t/p/w500" + episode.still_path : undefined });
           }
         }
       }
