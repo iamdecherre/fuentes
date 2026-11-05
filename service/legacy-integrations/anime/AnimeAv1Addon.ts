@@ -26,8 +26,7 @@ async function directStream(server: AnimeServer) {
   if (server.delivery === "direct") return [{ title, url: server.url }];
 
   try {
-    const embed = server.name.toLowerCase() === "voe" && server.url.startsWith("https://katanime.net/reproductor?url=")
-      ? await unwrapKatanime(server.url) : server.url;
+    const embed = server.url;
     if (/^https:\/\/ok\.ru\/videoembed\/\d+(?:\?|$)/i.test(embed)) {
       const stream = await extractOk(embed, input => fetch(input, { redirect: "manual", signal: AbortSignal.timeout(8000) }));
       return stream?.rawUrl ? [stream.isM3U8 ? { title, m3u8Url: stream.rawUrl } : { title, url: stream.rawUrl }] : [];
@@ -87,6 +86,14 @@ export function createAnimeAddon(source: AnimeSource) {
       }
       if (resource === "stream") {
         const servers = await source.getServers(id);
+        if (source.id === "katanime" || source.id === "monoschinos") {
+          const voe = servers.find(server => /^voe$/i.test(server.name));
+          const embedUrl = source.id === "katanime" && voe?.url.startsWith("https://katanime.net/reproductor?url=")
+            ? await unwrapKatanime(voe.url) : voe?.url;
+          const streams = embedUrl && /^https:\/\/(?:voe\.sx|shannoncoldalready\.com)\/e\/[a-z0-9]+$/i.test(embedUrl)
+            ? [{ title: "VOE", embedUrl }] : [];
+          return json({ streams });
+        }
         return json({ streams: (await Promise.all(servers.map(directStream))).flat() });
       }
       return json({ error: "Catálogo no encontrado" }, 404);
