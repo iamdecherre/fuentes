@@ -1,26 +1,10 @@
-# iamdecherre
+# Fuentes para Yomiri
 
-## Catálogos separados
+- [Estable](https://raw.githubusercontent.com/iamdecherre/fuentes/prueba-manga-yomiri/index.json) contiene únicamente fuentes comprobadas en la versión actual. Por ahora está vacío.
+- [Pruebas](https://raw.githubusercontent.com/iamdecherre/fuentes/prueba-manga-yomiri/testing.json) contiene las candidatas y RBTV+. Que aparezcan en el catálogo no garantiza la reproducción o lectura.
 
-- Manga: https://raw.githubusercontent.com/iamdecherre/fuentes/main/manga.json
-- Anime: https://raw.githubusercontent.com/iamdecherre/fuentes/main/anime.json
-- Argentina TV: https://raw.githubusercontent.com/iamdecherre/fuentes/main/argentina-tv.json
-- Fútbol: https://raw.githubusercontent.com/iamdecherre/fuentes/main/futbol.json
+Pegá la URL elegida en **Fuentes → Repositorios** e instalá manualmente el complemento que quieras probar.
 
-Cada URL se agrega manualmente en Fuentes. Anime incluye AnimeAV1, JKAnime, AnimeFLV.or.at, AnimeYT, MonosChinos y Katanime. Los cuatro conectores nuevos requieren la versión de desarrollo de Yomiri del 28 de octubre de 2026 o posterior. Catálogos, fichas, episodios y servidores se comprobaron mediante Bridge; la reproducción de video todavía no está verificada. Las candidatas restantes están en `pending-sources.json`, que no es un catálogo instalable. Series y dibujos animados se mantienen separados de anime.
+Para agregar un complemento, poné su URL HTTPS de manifiesto en `addons` de `testing.json`. Los perfiles declarativos de manga van en `sources`. Mové la entrada al índice estable solo después de comprobar el catálogo y la reproducción o lectura desde Yomiri.
 
-Fuente de extensiones para Yomiri: manga, anime y contenido en vivo.
-
-## Repositorio optimizado
-
-Agregá esta URL en **Yomiri → Fuentes → Repositorios**:
-
-```text
-https://raw.githubusercontent.com/iamdecherre/fuentes/main/catalog.json
-```
-
-Incluye conectores para MangaDex, LeerCapítulo, Kazoku Den, AnzManga, DB New Hope, Marmota, EnchiladaScan, Olympus, InManga, NovelCool, MANGA Plus, CompartiComics, AnimeAV1 y NowFutbol.
-
-El catálogo usa conectores de Yomiri y perfiles declarativos. No descarga APKs ni ejecuta código remoto. La disponibilidad de cada señal o catálogo depende de su proveedor.
-
-`index.json` conserva el catálogo anterior para versiones anteriores de Yomiri.
+Prioridad de pruebas: fútbol primero y anime después. Quedan por migrar AnimeAV1, AnimeFLV.or.at y JKAnime a manifiestos externos antes de incorporarlos.
